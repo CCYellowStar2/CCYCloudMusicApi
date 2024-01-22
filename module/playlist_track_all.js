@@ -2,8 +2,18 @@
 // 支持传递参数limit来限制获取歌曲的数据数量 例如: /playlist/track/all?id=7044354223&limit=10
 
 module.exports = (query, request) => {
+  const playlistUrlPattern = /playlist\?id=(\d+)/;
+  let playlistId = query.url;
+  const urlMatch = playlistUrlPattern.exec(playlistId);
+  if (urlMatch) {
+    // 如果找到了匹配项，输出提取的歌单ID
+    playlistId = urlMatch[1];
+  }
+  else {
+    playlistId = query.id
+  }
   const data = {
-    id: query.id,
+    id: playlistId,
     n: 100000,
     s: query.s || 8,
   }
